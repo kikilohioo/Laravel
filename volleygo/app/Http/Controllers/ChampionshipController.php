@@ -12,18 +12,51 @@ class ChampionshipController extends Controller
     public function index () {
         //mostrar todos los campeonatos
         $championships = Championship::all();
+        
         return $championships;
     }
 
     public function show($id) {
         //mostrar un campeonato
         $championship = Championship::findOrFail($id);
+        
         return $championship;
     }
 
     public function create() {
         //crear un campeonato
+        $rules = [
+            'name' => ['required', 'max:255'],
+            'description' => ['required', 'max:1000'],
+            'id_user' => ['required'],
+            'departament' => ['required'],
+            'city' => ['required'],
+            'direction' => ['required'],
+            'cash' => ['required'],
+            'transfer' => ['required'],
+            'online' => ['required'],
+            'abitab_redpagos' => ['required'],
+            'beach' => ['required'],
+            'max_teams' => ['required'],
+            'datetime' => ['required'],
+            'group_stage' => ['required'],
+            'competition_format' => ['required'],
+            'sets' => ['required','min:1'],
+            'final_sets' => ['required'],
+            'points' => ['required','min:1'],
+            'final_points' => ['required'],
+            'gold_cup' => ['required'],
+            'silver_cup' => ['required'],
+            'bronce_cup' => ['required'],
+            'participation_reward' => ['required'],
+            'gender' => ['required','in:MIX,MAS,FEM']
+        ];
+
+        //validacion de los datos recibidos
+        request()->validate($rules);
+
         $newChampionship = new Championship();
+        
         $newChampionship->name = request()->name;
         $newChampionship->description = request()->description;
         $newChampionship->id_user = request()->id_user;
@@ -48,6 +81,7 @@ class ChampionshipController extends Controller
         $newChampionship->bronce_cup = request()->bronce_cup;
         $newChampionship->participation_reward = request()->participation_reward;
         $newChampionship->gender = request()->gender;
+        
         $newChampionship->save();
 
         return $newChampionship;
@@ -55,9 +89,19 @@ class ChampionshipController extends Controller
 
     public function update($id) {
         //actualizar un campeonato
+        $championship = Championship::findOrFail($id);
+        
+        $championship->update(request()->all());
+
+        return $championship;
     }
 
     public function delete($id) {
         //eliminar un campeonato
+        $championship = Championship::findOrFail($id);
+        
+        $championship->delete();
+
+        return $championship;
     }
 }

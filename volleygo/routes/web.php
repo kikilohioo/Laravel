@@ -18,17 +18,17 @@ Route::get('/', function () {
 })->name('main');
 
 //endpoint para mostrar todos los campeonatos
-Route::get('championships', 'ChampionshipController@index')->name('championships.index');
+//Route::get('/championships', 'ChampionshipController@index')->name('championships.index');
 
 //endpoint para crear campeonato
-Route::post('championships', 'ChampionshipController@create')->name('championships.create');
+Route::post('/championships', 'ChampionshipController@create')->name('championships.create');
 
 //endpoint para mostrar campeonato
-Route::get('championships/{id}', 'ChampionshipController@show')->name('championships.show');
+Route::get('/championships/{id}', 'ChampionshipController@show')->name('championships.show');
 
 //endpoint para actualizar campeonato
 /* Otra forma seria Route::match(['put'], 'ruta', function () {...}) */
-Route::put('championships/{id}','ChampionshipController@update')->name('championships.update');
+Route::put('/championships/{id}','ChampionshipController@update')->name('championships.update');
 
 //endpoint para eliminar campeonato
-Route::delete('championships/{id}', 'ChampionshipController@delete')->name('championships.delete');
+Route::delete('/championships/{id}', 'ChampionshipController@delete')->name('championships.delete');

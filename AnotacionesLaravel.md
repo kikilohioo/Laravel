@@ -1,6 +1,11 @@
 # Anotaciones Laravel
 * Buena práctica #1
-	Agregar nombres a las rutas con ```...->name('nombreRuta')```
+	Agregar nombres a las rutas con ```...->name('nombreRuta.metodo')```
+* Buena práctica #2
+	Formas de redirigir 
+	- ```return redirect()->back()```
+	- ```return redirect()->action('ControllerName@metodo')```
+	- ```return redirect()->route(''nombreruta.metodo)```
 
 #### Comandos Artisan
 A todos agregar antes ```php artisan```
@@ -19,3 +24,23 @@ más info en https://laravel.com/docs/9.x/queries
 
 #### Eloquent
 Es el ORM de Laravel y sirve para hacer interacciones a la base de datos a traves de los modelos por ejemplo incluyendo ```use App\Models\Product``` en el archivo donde quieramos usarlo y ejecutar cosas como ```Product::findOrFail('products');```
+
+* #### Como traer todos los registros
+	```$entidades = Entidad::all()->where()``` el where es para agregar condiciones
+* #### Como traer un registro solo
+	```$entidad = Entidad::findOrFail($id)``` aplica el metodo where
+* #### Como crear un registro
+	```$entidad = new Entidad()``` aplica el metodo where
+	```$entidad->campo1 = ...```
+	```$entidad->campo2 = ...```
+	```...```
+	```$entidad->save()```
+* #### Como editar un registro
+	```$entidad = Entidad::findOrFail($id)``` aplica el metodo where
+	```$entidad->campo1 = ...```
+	```$entidad->campo2 = ...```
+	```...```
+	```$entidad->save()```
+* #### Como eliminar un registro
+	```$entidad = Entidad::findOrFail($id)``` aplica el metodo where
+	```$entidad->delete()```

@@ -53,7 +53,11 @@ class ChampionshipController extends Controller
         ];
 
         //validacion de los datos recibidos
-        request()->validate($rules);
+        $errors = request()->validate($rules);
+        if(count($errors) > 0){
+            dd($errors);
+            return response($errors,400);
+        }
 
         $newChampionship = new Championship();
         

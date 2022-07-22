@@ -1,4 +1,8 @@
 # Anotaciones Laravel
+#### Como Iniciar
+- ```composer create-project laravel/laravel example-app``` ejecutamos este comando con el nombre del proyecto
+- ```cd example-app``` nos cambiamos al directorio raiz del proyecto y listo
+
 * Buena práctica #1
 	Agregar nombres a las rutas con ```...->name('nombreRuta.metodo')```
 * Buena práctica #2

@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('main');
+// Route::get('/', function () {
+//     return "VolleyGO API v1.0.0";
+// })->name('main');
 
 //endpoint para mostrar todos los campeonatos
-//Route::get('/championships', 'ChampionshipController@index')->name('championships.index');
+Route::get('/championships', 'ChampionshipController@index')->name('championships.index');
 
 //endpoint para crear campeonato
 Route::post('/championships', 'ChampionshipController@create')->name('championships.create');

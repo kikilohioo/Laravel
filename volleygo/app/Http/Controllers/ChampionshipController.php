@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Championship;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ChampionshipController extends Controller
 {
@@ -52,11 +53,11 @@ class ChampionshipController extends Controller
             'gender' => ['required','in:MIX,MAS,FEM']
         ];
 
+        $validator = Validator::make(request()->all(), $rules);
+        
         //validacion de los datos recibidos
-        $errors = request()->validate($rules);
-        if(count($errors) > 0){
-            dd($errors);
-            return response($errors,400);
+        if($validator->fails()){
+            return response("Field validation failed",400);
         }
 
         $newChampionship = new Championship();

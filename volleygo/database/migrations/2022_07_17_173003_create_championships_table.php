@@ -17,7 +17,9 @@ return new class extends Migration
             $table->bigIncrements('id_championship');
             $table->string('name');
             $table->string('description', 1000);
-            $table->foreignId('id_user')->references('id_user')->on('users');
+            //foraneidad con usuario
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id_user')->on('users');
             $table->string('departament');
             $table->string('city');
             $table->string('direction');

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -25,7 +26,7 @@ class UserFactory extends Factory
             'DNI_type' => $this->faker->randomElement(['CI','Pasaporte']),
             'phone' => $this->faker->phoneNumber(),
             'gender' => $this->faker->randomElement(['Hombre','Mujer','No Binario']),
-            'password' => $this->faker->password(6,20)
+            'password' => Hash::make($this->faker->password(6,20))
         ];
     }
 

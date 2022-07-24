@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Championship;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,5 +19,6 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->count(5)->create();
         Championship::factory()->count(5)->create();
+        Team::factory()->count(5)->create();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TeamRequest;
 use App\Models\Team;
+use App\Models\TeamPlayer;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -11,12 +12,13 @@ class TeamController extends Controller
     //Controlador de Campeonatos
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     public function index () {
         //mostrar todos los equipos
-        $teams = Team::all();
+        $id_user = request()->input('id_user');
+        $teams = Team::where('id_user', $id_user)->get();
         
         return $teams;
     }

@@ -18,22 +18,9 @@ Route::get('/', function () {
     return "VolleyGO API v".env('APP_VERSION');
 })->name('main');
 
+//endpoint para gestionar CRUD campeonatos
 Route::resource('championships', 'ChampionshipController')->except(['edit','create']);
-//endpoint para mostrar todos los campeonatos
-// Route::get('championships', 'ChampionshipController@index')->name('championships.index');
 
-// //endpoint para crear campeonato
-// Route::post('championships', 'ChampionshipController@create')->name('championships.create');
-
-// //endpoint para mostrar campeonato
-// Route::get('championships/{id}', 'ChampionshipController@show')->name('championships.show');
-
-// //endpoint para actualizar campeonato
-// /* Otra forma seria Route::match(['put'], 'ruta', function () {...}) */
-// Route::put('championships/{id}','ChampionshipController@update')->name('championships.update');
-
-// //endpoint para eliminar campeonato
-// Route::delete('championships/{id}', 'ChampionshipController@delete')->name('championships.delete');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

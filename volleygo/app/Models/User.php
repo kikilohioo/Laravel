@@ -27,6 +27,8 @@ class User extends Authenticatable
         'DNI_type',
         'phone',
         'gender',
+        'position',
+        'number',
         'password',
     ];
 
@@ -48,4 +50,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function championships(){
+        return $this->hasMany(Championship::class, 'id_championship');
+    }
+
+    public function teams(){
+        return $this->hasMany(Team::class, 'id_team');
+    }
+
+    public function teams_as_player(){
+        return $this->belongsToMany(Team::class)->using(TeamPlayer::class, 'id_team_player');
+    }
+
+    public function votes(){
+        return $this->hasMany(Vote::class, 'id_vote');
+    }
 }

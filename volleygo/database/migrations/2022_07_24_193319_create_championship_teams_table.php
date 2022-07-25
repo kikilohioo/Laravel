@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('team_players', function (Blueprint $table) {
-            $table->bigIncrements('id_team_player');
-            //foraneidad con player
-            $table->unsignedBigInteger('id_player');
-            $table->foreign('id_player')->references('id_player')->on('players')->onDelete('cascade');
-            //foraneidad con team
+        Schema::create('championship_teams', function (Blueprint $table) {
+            $table->bigIncrements('id_championship_team');
+            //foraneidad con teams
             $table->unsignedBigInteger('id_team');
             $table->foreign('id_team')->references('id_team')->on('teams')->onDelete('cascade');
+            //foraneidad con championship
+            $table->unsignedBigInteger('id_championship');
+            $table->foreign('id_championship')->references('id_championship')->on('championships')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('team_players');
+        Schema::dropIfExists('championship_teams');
     }
 };

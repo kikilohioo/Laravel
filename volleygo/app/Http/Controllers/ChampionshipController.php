@@ -4,19 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChampionshipRequest;
 use App\Models\Championship;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Models\ChampionshipTeam;
+use App\Models\TeamPlayer;
 
 class ChampionshipController extends Controller
 {
     //Controlador de Campeonatos
     public function __construct()
     {
-        $this->middleware('auth')->except('index');
+        //$this->middleware('auth')->except('index');
     }
 
     public function index () {
         //mostrar todos los campeonatos
+        $id_user = request()->input('id_user');
+
+        $championships = [
+            'self_managed' => [],
+            'as_player' => []
+        ];
+
+        if(isset($id_user)){
+            //carga de campeonatos creados por mi
+            $championships['self_managed'] = Championship::where('id_user', $id_user);
+            $teams_as_player = TeamPlayer::where('id_user', $id_user)->team;
+            
+            //carga de campeonatos en los que participé
+            if(isset($teams_as_player)){
+                $championships_by_teams = [];
+                
+                foreach($teams_as_player as $id_team => $team){
+                    $championship_by_team = ChampionshipTeam::where('id_team', $id_team)->championship;
+                    array_push($championships_by_teams, implode(",", $championship_by_team));
+                }
+
+                return $championships;
+            }
+        }
+
         $championships = Championship::all();
         
         return $championships;

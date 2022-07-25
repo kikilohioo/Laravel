@@ -27,7 +27,6 @@ class Championship extends Model
         'abitab_redpagos',
         'beach',
         'max_teams',
-        'datetime',
         'group_stage',
         'competition_format',
         'sets',
@@ -43,4 +42,20 @@ class Championship extends Model
         'email',
         'password',
     ];
+
+    protected $dates = [
+        'datetime'
+    ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function votes(){
+        return $this->hasMany(Vote::class, 'id_vote');
+    }
+
+    public function teams(){
+        return $this->hasMany(Team::class)->using(RoleUser::class, 'id_championship_team');
+    }
 }

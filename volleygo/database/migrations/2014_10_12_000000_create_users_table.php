@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('DNI_type');
             $table->string('phone');
             $table->string('gender');
+            $table->string('position');
+            $table->integer('number');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vote;
-use App\Http\Requests\StoreVoteRequest;
-use App\Http\Requests\UpdateVoteRequest;
+use App\Http\Requests\VoteRequest;
 
 class VoteController extends Controller
 {
@@ -31,10 +30,10 @@ class VoteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreVoteRequest  $request
+     * @param  \App\Http\Requests\VoteRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreVoteRequest $request)
+    public function store(VoteRequest $request)
     {
         //
     }
@@ -64,11 +63,11 @@ class VoteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateVoteRequest  $request
+     * @param  \App\Http\Requests\VoteRequest  $request
      * @param  \App\Models\Vote  $vote
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateVoteRequest $request, Vote $vote)
+    public function update(VoteRequest $request, Vote $vote)
     {
         //
     }

@@ -56,6 +56,6 @@ class Championship extends Model
     }
 
     public function teams(){
-        return $this->hasMany(Team::class)->using(RoleUser::class, 'id_championship_team');
+        return $this->hasMany(Team::class)->using(ChampionshipTeam::class, 'id_championship_team');
     }
 }

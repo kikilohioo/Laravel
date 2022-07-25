@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot as RelationsPivot;
 
-class Team extends RelationsPivot
+class ChampionshipTeam extends RelationsPivot
 {
     use HasFactory;
 
-    protected $table = 'championship_team';
+    protected $table = 'championship_teams';
 
     protected $primaryKey = 'id_championship_team';
     /**

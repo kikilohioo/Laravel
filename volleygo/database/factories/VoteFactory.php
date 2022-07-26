@@ -19,13 +19,13 @@ class VoteFactory extends Factory
         return [
             'id_user' => 1,
             'id_championship' => 2,
-            'id_tp_cen1' => 3,
-            'id_tp_cen2' => 4,
-            'id_tp_ops1' => 5,
-            'id_tp_ops2' => 6,
-            'id_tp_set' => 7,
-            'id_tp_lib' => 8,
-            'id_tp_opo' => 9
+            'id_tp_cen1' => 1,
+            'id_tp_cen2' => 2,
+            'id_tp_ops1' => 3,
+            'id_tp_ops2' => 4,
+            'id_tp_set' => 5,
+            'id_tp_lib' => 6,
+            'id_tp_opo' => 7
         ];
     }
 }

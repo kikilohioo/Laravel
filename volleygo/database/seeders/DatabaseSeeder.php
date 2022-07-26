@@ -22,11 +22,11 @@ class DatabaseSeeder extends Seeder
         User::factory()->count(5)->create();
         Championship::factory()->count(5)->create();
         Team::factory()->count(5)->create();
-        Vote::factory()->count(1)->create();
         $i = 0;
-        for($i; $i > 11; $i++){
+        for($i; $i < 8; $i++){
             DB::insert('INSERT INTO team_players (`id_user`,`id_team`,`created_at`,`updated_at`) VALUES(:id_user,:id_team,:created_at,:updated_at)',['id_user' => rand(1,5), 'id_team' => rand(1,5), 'created_at' => '2022-07-24 23:20:38', 'updated_at' => '2022-07-24 23:20:38']);
         }
+        Vote::factory()->count(1)->create();
         $j = 0;
         for($j; $j < 6; $j++){
             DB::insert('INSERT INTO championship_teams (`id_team`,`id_championship`,`created_at`,`updated_at`) VALUES(:id_team,:id_championship,:created_at,:updated_at)',['id_team' => rand(1,5), 'id_championship' => rand(1,5), 'created_at' => '2022-07-24 23:20:38', 'updated_at' => '2022-07-24 23:20:38']);

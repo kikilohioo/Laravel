@@ -60,7 +60,7 @@ class User extends Authenticatable
     }
 
     public function teams_as_player(){
-        return $this->belongsToMany(Team::class)->using(TeamPlayer::class, 'id_team_player');
+        return $this->belongsToMany(Team::class, 'team_players', 'id_user', 'id_team')->using(TeamPlayer::class, 'id_team_player');
     }
 
     public function votes(){

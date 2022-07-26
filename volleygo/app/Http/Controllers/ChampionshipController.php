@@ -26,28 +26,30 @@ class ChampionshipController extends Controller
 
         if(isset($id_user)){
             //carga de campeonatos creados por mi
-            $championships['self_managed'] = Championship::where('id_user', $id_user);
-            $teams_as_player = TeamPlayer::where('id_user', $id_user)->get();
+            $championships['self_managed'] = Championship::where('id_user', $id_user)->get()->toArray();
             
             //carga de campeonatos en los que participé
+            $teams_as_player = TeamPlayer::where('id_user', $id_user)->get();
+            
             if(isset($teams_as_player)){
                 $championships_by_teams = [];
                 
                 foreach($teams_as_player as $team){
                     $championship_by_team = ChampionshipTeam::where('id_team', $team->id_team)->get('id_championship')->toArray();
-                    
-                    foreach(){
-                        
+                    foreach($championship_by_team as $championship){
+                        array_push($championships_by_teams, $championship['id_championship']);
                     }
-                    array_push($championships_by_teams, );
                 }
-                dd($championships);
+
+                foreach($championships_by_teams as $championship){
+                    array_push($championships['as_player'], Championship::find($championship)->toArray());
+                }
+                
                 return $championships;
             }
         }
         
-        $championships = Championship::all();
-        dd($championships);
+        $championships = Championship::all()->toArray();
         
         return $championships;
     }

@@ -36,7 +36,7 @@ return new class extends Migration
             $table->foreign('id_tp_set')->references('id_team_player')->on('team_players');
             $table->unsignedBigInteger('id_tp_lib');
             $table->foreign('id_tp_lib')->references('id_team_player')->on('team_players');
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 

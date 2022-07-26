@@ -21,7 +21,7 @@ return new class extends Migration
             //foraneidad con team
             $table->unsignedBigInteger('id_team');
             $table->foreign('id_team')->references('id_team')->on('teams')->onDelete('cascade');
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 

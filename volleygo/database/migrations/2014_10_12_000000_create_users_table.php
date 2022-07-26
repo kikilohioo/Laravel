@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('position');
             $table->integer('number');
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 

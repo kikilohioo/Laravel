@@ -20,7 +20,7 @@ return new class extends Migration
             //foraneidad con usuario
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('users');
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 

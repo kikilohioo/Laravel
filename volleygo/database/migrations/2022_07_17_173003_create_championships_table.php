@@ -41,7 +41,7 @@ return new class extends Migration
             $table->boolean('bronce_cup');
             $table->boolean('participation_reward');
             $table->string('gender');
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 

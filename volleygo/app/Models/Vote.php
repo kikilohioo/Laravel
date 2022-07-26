@@ -29,6 +29,6 @@ class Vote extends Model
     }
 
     public function players(){
-        return $this->hasMany(TeamPlayer::class, 'id_team_player');
+        return $this->hasMany(TeamPlayer::class);
     }
 }

@@ -51,19 +51,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function championships(){
+    public function championships()
+    {
         return $this->hasMany(Championship::class, 'id_championship');
     }
 
-    public function teams(){
+    public function teams()
+    {
         return $this->hasMany(Team::class, 'id_team');
     }
 
-    public function teams_as_player(){
+    public function teams_as_player()
+    {
         return $this->belongsToMany(Team::class, 'team_players', 'id_user', 'id_team')->using(TeamPlayer::class, 'id_team_player');
     }
 
-    public function votes(){
+    public function votes()
+    {
         return $this->hasMany(Vote::class, 'id_vote');
+    }
+
+    public static function votes_as_player($id_user)
+    {
+        return Vote::votes_by_user($id_user);
     }
 }

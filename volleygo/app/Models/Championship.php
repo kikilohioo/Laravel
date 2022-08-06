@@ -47,15 +47,18 @@ class Championship extends Model
         'datetime'
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function votes(){
+    public function votes()
+    {
         return $this->hasMany(Vote::class, 'id_vote');
     }
 
-    public function teams(){
+    public function teams()
+    {
         return $this->hasMany(Team::class)->using(ChampionshipTeam::class, 'id_championship_team');
     }
 }

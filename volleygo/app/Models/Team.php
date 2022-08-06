@@ -21,15 +21,18 @@ class Team extends Model
         'id_user',
     ];
 
-    public function players(){
+    public function players()
+    {
         return $this->hasMany(User::class)->using(TeamPlayer::class, 'id_team_player');
     }
 
-    public function championship(){
+    public function championship()
+    {
         return $this->belongsToMany(Championship::class)->using(ChampionshipTeam::class, 'id_championship_team');
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'id_user');
     }
 }

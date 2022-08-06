@@ -22,11 +22,13 @@ class ChampionshipTeam extends RelationsPivot
         'id_championship'
     ];
 
-    public function team(){
+    public function team()
+    {
         return $this->belongsTo(Team::class, 'id_team');
     }
 
-    public function championship(){
+    public function championship()
+    {
         return $this->belongsTo(Championship::class, 'id_championship');
     }
 }

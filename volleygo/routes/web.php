@@ -19,7 +19,10 @@ Route::get('/', function () {
 })->name('main');
 
 //endpoint para gestionar CRUD campeonatos
-Route::resource('championships', 'ChampionshipController')->except(['edit','create']);
+Route::resource('championship', 'ChampionshipController')->except(['edit','create']);
+
+//endpoint para gestionar CRUD usuarios
+Route::resource('user', 'UserController')->except(['edit','create']);
 
 Auth::routes();
 

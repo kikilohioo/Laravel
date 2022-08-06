@@ -22,15 +22,18 @@ class TeamPlayer extends Pivot
         'id_team'
     ];
 
-    public function team(){
+    public function team()
+    {
         return $this->belongsTo(Team::class, 'id_team');
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function votes(){
+    public function votes()
+    {
         return $this->belongsToMany(Vote::class, 'id_vote');
     }
 }

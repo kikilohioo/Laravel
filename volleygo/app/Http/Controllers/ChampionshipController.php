@@ -15,7 +15,8 @@ class ChampionshipController extends Controller
         //$this->middleware('auth')->except('index');
     }
 
-    public function index () {
+    public function index()
+    {
         //mostrar todos los campeonatos
         $id_user = request()->input('id_user');
 
@@ -24,44 +25,46 @@ class ChampionshipController extends Controller
             'as_player' => []
         ];
 
-        if(isset($id_user)){
+        if (isset($id_user)) {
             //carga de campeonatos creados por mi
             $championships['self_managed'] = Championship::where('id_user', $id_user)->get()->toArray();
-            
+
             //carga de campeonatos en los que participé
             $teams_as_player = TeamPlayer::where('id_user', $id_user)->get();
-            
-            if(isset($teams_as_player)){
+
+            if (isset($teams_as_player)) {
                 $championships_by_teams = [];
-                
-                foreach($teams_as_player as $team){
+
+                foreach ($teams_as_player as $team) {
                     $championship_by_team = ChampionshipTeam::where('id_team', $team->id_team)->get('id_championship')->toArray();
-                    foreach($championship_by_team as $championship){
+                    foreach ($championship_by_team as $championship) {
                         array_push($championships_by_teams, $championship['id_championship']);
                     }
                 }
 
-                foreach($championships_by_teams as $championship){
+                foreach ($championships_by_teams as $championship) {
                     array_push($championships['as_player'], Championship::find($championship)->toArray());
                 }
-                
+
                 return $championships;
             }
         }
-        
+
         $championships = Championship::all()->toArray();
-        
+
         return $championships;
     }
 
-    public function show(Championship $championship) {
+    public function show(Championship $championship)
+    {
         //mostrar un campeonato
         //$championship = Championship::findOrFail($championship); se resuelve con herencia en el parametro
-        
+
         return $championship;
     }
 
-    public function store(ChampionshipRequest $request) {
+    public function store(ChampionshipRequest $request)
+    {
         //crear un campeonato
         // $validator = Validator::make($request->all(), $rules);
         // //validacion de los datos recibidos
@@ -69,7 +72,7 @@ class ChampionshipController extends Controller
         //     return response("Field validation failed", 400);
         // }
         $newChampionship = new Championship();
-        
+
         $newChampionship->name = $request->name;
         $newChampionship->description = $request->description;
         $newChampionship->id_user = $request->id_user;
@@ -94,13 +97,14 @@ class ChampionshipController extends Controller
         $newChampionship->bronce_cup = $request->bronce_cup;
         $newChampionship->participation_reward = $request->participation_reward;
         $newChampionship->gender = $request->gender;
-        
+
         $newChampionship->save();
 
         return $newChampionship;
     }
 
-    public function update(ChampionshipRequest $request, Championship $championship) {
+    public function update(ChampionshipRequest $request, Championship $championship)
+    {
         //actualizar un campeonato
         // $validator = Validator::make($request->all(), $rules);
         // //validacion de los datos recibidos
@@ -108,16 +112,17 @@ class ChampionshipController extends Controller
         //     return response("Field validation failed", 400);
         // }
         //$championship = Championship::findOrFail($championship);
-        
+
         $championship->update($request->validated());
 
         return $championship;
     }
 
-    public function destroy(Championship $championship) {
+    public function destroy(Championship $championship)
+    {
         //eliminar un campeonato
         //$championship = Championship::findOrFail($championship);
-        
+
         $championship->delete();
 
         return $championship;

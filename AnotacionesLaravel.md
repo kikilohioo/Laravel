@@ -19,6 +19,25 @@
 	Mantener los nombres de los metodos de las operaciones CRUD con las recomendaciones de laravel (index,show,store,update,destroy) nos permite resolver todas esas rutas de forma muy simple. Todas las lineas de enrrutamiento anteriores para cada metodo se resuelven en una sola ```Route::resource('model', 'ModelController')```. Además podemos excluir mediante los metodos ```->only([...]) o ->except([...])```
 * Buena práctica #5
 	Hay que tener en cuenta el orden en el que se crean las migraciones para que no hayan conflictos en las relaciones con claves foraneas en la base de datos
+* Buena práctica #6
+	Para construccion de relaciones con modelos con claves compuestas debemos sobrescribir el siguiente metodo de la siguiente forma
+	 ```
+	 /**
+     * Set the keys for a select query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSelectQuery($query)
+    {
+        $query->where([
+            'id_usuario' => $this->id_usuario,
+            'id_rol' => $this->id_rol,
+        ]);
+
+        return $query;
+    }
+	 ```
 
 
 #### Comandos Artisan

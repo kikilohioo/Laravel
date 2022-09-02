@@ -15,12 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return "VolleyGO API v".env('APP_VERSION');
+    return "e-Mercado API v".env('APP_VERSION');
 })->name('main');
 
 //endpoint para gestionar CRUD campeonatos
-Route::resource('championships', 'ChampionshipController')->except(['edit','create']);
-
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

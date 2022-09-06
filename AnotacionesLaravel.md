@@ -14,7 +14,7 @@
 * Buena práctica #3
 	Resolver mediante inyección implicitad de modelos las operaciones show | update | destroy y cualquier otra que depende de encontrar un elemento asociado a un modelo, mediante su identificador. Esto se realiza casteando el parametro al momento de recibirlo en el metodo encargado de gestionar la operación en cuestion 
 	``` public function show(Model $modelById){...}``` de esta forma, adentro del metodo show ```$modelById``` es el mismo resultado que la operación ```Model::findOrFail($modelById)```. Con la excepción de que en el enrrutamiento podemos resolver sobre cual parametro realizar la busqueda de la siguiente forma 
-	````Route::get('model/{modelById:otherField}')``` ahora va a hacer un ```findOrFail()``` con otro parametro del modelo, en este caso ```otherField```
+	```Route::get('model/{modelById:otherField}')``` ahora va a hacer un ```findOrFail()``` con otro parametro del modelo, en este caso ```otherField```
 * Buena práctica #4
 	Mantener los nombres de los metodos de las operaciones CRUD con las recomendaciones de laravel (index,show,store,update,destroy) nos permite resolver todas esas rutas de forma muy simple. Todas las lineas de enrrutamiento anteriores para cada metodo se resuelven en una sola ```Route::resource('model', 'ModelController')```. Además podemos excluir mediante los metodos ```->only([...]) o ->except([...])```
 * Buena práctica #5
@@ -38,6 +38,10 @@
         return $query;
     }
 	 ```
+* Para traer datos de relaciones de muchos a muchos, con datos de tablas pivot se puede hacer lo siguiente en la declaracion de las relaciones
+```
+return $this->belongsToMany(Product::class)->withPivot('quantity');
+```
 
 
 #### Comandos Artisan

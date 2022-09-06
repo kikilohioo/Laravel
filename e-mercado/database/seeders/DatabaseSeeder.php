@@ -2,13 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Championship;
-use App\Models\Team;
 use App\Models\User;
-use App\Models\Vote;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
+use App\Models\Order;
+use App\Models\Payment;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,17 +17,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(5)->create();
-        Championship::factory()->count(5)->create();
-        Team::factory()->count(5)->create();
-        $i = 0;
-        for($i; $i < 8; $i++){
-            DB::insert('INSERT INTO team_players (`id_user`,`id_team`,`created_at`,`updated_at`) VALUES(:id_user,:id_team,:created_at,:updated_at)',['id_user' => rand(1,5), 'id_team' => rand(1,5), 'created_at' => '2022-07-24 23:20:38', 'updated_at' => '2022-07-24 23:20:38']);
-        }
-        Vote::factory()->count(1)->create();
-        $j = 0;
-        for($j; $j < 6; $j++){
-            DB::insert('INSERT INTO championship_teams (`id_team`,`id_championship`,`created_at`,`updated_at`) VALUES(:id_team,:id_championship,:created_at,:updated_at)',['id_team' => rand(1,5), 'id_championship' => rand(1,5), 'created_at' => '2022-07-24 23:20:38', 'updated_at' => '2022-07-24 23:20:38']);
-        }
+        $users = User::factory()->count(20)->create();
+        $products = Product::factory()->count(50)->create();
+
+        $orders = Order::factory()
+        ->count(10)
+        ->make()
+        ->each(function($order) use ($users){
+            $order->user_id = $users->random()->id;
+            $order->save();
+
+            $payment = Payment::factory()->make();
+            $payment->order_id = $order->id;
+            $payment->save();
+        });
     }
 }

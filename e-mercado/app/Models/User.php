@@ -12,8 +12,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $primaryKey = "id_user";
-
     /**
      * The attributes that are mass assignable.
      *
@@ -23,11 +21,7 @@ class User extends Authenticatable
         'names',
         'lastnames',
         'email',
-        'DNI',
-        'DNI_type',
-        'phone',
-        'gender',
-        'position',
+        'admin_dince',
         'number',
         'password',
     ];
@@ -51,28 +45,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function championships()
-    {
-        return $this->hasMany(Championship::class, 'id_championship');
+    public function orders(){
+        return $this->hasMany(Order::class);
     }
 
-    public function teams()
-    {
-        return $this->hasMany(Team::class, 'id_team');
+    public function payments(){
+        return $this->hasManyThrough(Payment::class, Order::class);
     }
 
-    public function teams_as_player()
+    public function image()
     {
-        return $this->belongsToMany(Team::class, 'team_players', 'id_user', 'id_team')->using(TeamPlayer::class, 'id_team_player');
-    }
-
-    public function votes()
-    {
-        return $this->hasMany(Vote::class, 'id_vote');
-    }
-
-    public static function votes_as_player($id_user)
-    {
-        return Vote::votes_by_user($id_user);
+        return $this->morphOne(Image::class , 'imageable');
     }
 }

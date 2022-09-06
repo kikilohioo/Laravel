@@ -22,12 +22,6 @@ class UserFactory extends Factory
             'names' => $this->faker->name(),
             'lastnames' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'DNI' => $this->faker->numberBetween(1000000,99999999),
-            'DNI_type' => $this->faker->randomElement(['CI','Pasaporte']),
-            'phone' => $this->faker->phoneNumber(),
-            'gender' => $this->faker->randomElement(['Hombre','Mujer','No Binario']),
-            'position' => $this->faker->randomElement(['CEN1','CEN2','OPO','SET','OSP1','OSP2','LIB']),
-            'number' => $this->faker->numberBetween(1,100),
             'password' => Hash::make($this->faker->password(6,20))
         ];
     }

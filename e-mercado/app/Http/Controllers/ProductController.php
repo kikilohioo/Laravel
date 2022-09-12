@@ -15,7 +15,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::available()->get();
+
+        return $products;
     }
 
     /**

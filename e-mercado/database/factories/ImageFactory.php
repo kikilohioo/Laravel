@@ -17,7 +17,14 @@ class ImageFactory extends Factory
     public function definition()
     {
         return [
-            'path' => 'D:\Projects\Laravel\e-mercado\public\images/'.$this->faker->numberBetween(1,10).'.jpg'
+            'path' => 'img/products/'.$this->faker->numberBetween(1,10).'.jpg'
         ];
+    }
+
+    public function user()
+    {
+        return $this->state([
+            'path' => 'img/users/'.$this->faker->numberBetween(1,10).'.jpg'
+        ]);
     }
 }

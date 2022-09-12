@@ -18,5 +18,8 @@ Route::get('/', function () {
     return "e-Mercado API v".env('APP_VERSION');
 })->name('main');
 
-//endpoint para gestionar CRUD campeonatos
+Route::resource('products', 'ProductController')->except(['edit', 'create']);
+Route::resource('products.carts', 'ProductCartController')->only(['destroy', 'store', 'update']);
+Route::resource('carts', 'CartController')->only(['index']);
+
 Auth::routes();

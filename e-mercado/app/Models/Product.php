@@ -9,6 +9,14 @@ class Product extends Model
 {
     use HasFactory;
 
+    public $fillable = [
+        'title',
+        'description',
+        'price',
+        'stock',
+        'status'
+    ];
+
     public function carts()
     {
         return $this->morphedByMany(Cart::class, 'productable')->withPivot('quantity');
@@ -24,7 +32,7 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function scopeAbailable($query){
+    public function scopeAvailable($query){
         $query->where('status', 'available');
     }
 }

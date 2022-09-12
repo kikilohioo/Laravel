@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return "e-Mercado API v".env('APP_VERSION');
+    return view('welcome');
 })->name('main');
 
-Route::resource('products', 'ProductController')->except(['edit', 'create']);
-Route::resource('products.carts', 'ProductCartController')->only(['destroy', 'store', 'update']);
+Route::resource('products', 'ProductController');
+Route::resource('products.carts', 'ProductCartController')->only(['destroy', 'store']);
 Route::resource('carts', 'CartController')->only(['index']);
 
 Auth::routes();

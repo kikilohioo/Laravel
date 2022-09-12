@@ -35,18 +35,18 @@ class ProductCartController extends Controller
         return $cookie;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product, Cart $cart)
-    {
-        //
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  \App\Models\Product  $product
+    //  * @param  \App\Models\Cart  $cart
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(Request $request, Product $product, Cart $cart)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends Controller
 {
@@ -21,22 +22,39 @@ class ProductController extends Controller
     public function index()
     {
         return view('products.index')->with([
-            'products' => Product::available()->get()
+            'products' => Product::all()
         ]);
+    }
+
+    public function create()
+    {
+        return view('products.create');
     }
 
     public function store()
     {
-        $validator = Validator::make($this->req->all(), [
+        $rules = [
             'title' => 'required',
-            'description' => 'required|min:20',
-            'price' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response($validator->errors());
+            'description' => ['required', 'min:20'],
+            'price' => ['required', 'min:1'],
+            'stock' => ['required', 'min:0'],
+            'status' => ['required', 'in:available,unavailable'],
+        ];
+
+        $this->req->validate($rules);
+
+        if($this->req->status == 'available' && $this->req->stock == 0){
+            return redirect()
+            ->back()
+            ->withInput($this->req->all())
+            ->withErrors('If available must have stock');
         }
 
-        return response(Product::create($this->req->all()));
+        Product::create($this->req->all());
+
+        return redirect()
+        ->route('products.index')
+        ->withSuccess('Product created successfully');
     }
 
     public function show(Product $product)
@@ -46,15 +64,42 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(Product $product)
+    public function edit(Product $product)
     {
-        $product->update($this->req->all());
-        $productUpdated = $product->fresh();
-        return response($productUpdated);
+        return view('products.edit')->with([
+            'product' => $product
+        ]);
     }
 
+    public function update(Product $product)
+    {
+        $rules = [
+            'title' => 'required',
+            'description' => ['required', 'min:20'],
+            'price' => ['required', 'min:1'],
+            'stock' => ['required', 'min:0'],
+            'status' => ['required', 'in:available,unavailable'],
+        ];
+        
+        $this->req->validate($rules);
+
+        if ($this->req->status == 'available' && $this->req->stock == 0) {
+            session()->flash('error', 'If available must have stock');
+            return redirect()->back()->withInput($this->req->all());
+        }
+        
+        $product->update($this->req->all());
+
+        return redirect()
+        ->route('products.index')
+        ->withSuccess('Product updated successfully');
+    }
+    
     public function destroy(Product $product)
     {
-        return response($product->update(['status' => 'unavailable']));
+        $product->delete();
+        return redirect()
+        ->route('products.index')
+        ->withSuccess('Product deleted successfully');
     }
 }

@@ -84,3 +84,14 @@ Es el ORM de Laravel y sirve para hacer interacciones a la base de datos a trave
 * #### Como eliminar un registro
 	```$entidad = Entidad::findOrFail($id)``` aplica el metodo where
 	```$entidad->delete()```
+* #### Como crear un scope
+	En el modelo de la entidad crearemos una funcion por ejemplo para mostrar los productos disponibles en este ejemplo:
+	```
+	public function scopeAvailable($query){
+        $query->where('status', 'available');
+    }
+	``` 
+	Luego en el controlador o donde lo necesitemos llamaremos el scope de la siguiente manera:
+	```
+	Porduct::available()->get()
+	```

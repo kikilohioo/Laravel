@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -32,26 +33,9 @@ class ProductController extends Controller
         return view('products.create');
     }
 
-    public function store()
+    public function store(ProductRequest $request)
     {
-        $rules = [
-            'title' => 'required',
-            'description' => ['required', 'min:20'],
-            'price' => ['required', 'min:1'],
-            'stock' => ['required', 'min:0'],
-            'status' => ['required', 'in:available,unavailable'],
-        ];
-
-        $this->req->validate($rules);
-
-        if($this->req->status == 'available' && $this->req->stock == 0){
-            return redirect()
-            ->back()
-            ->withInput($this->req->all())
-            ->withErrors('If available must have stock');
-        }
-
-        Product::create($this->req->all());
+        Product::create($request->validated());
 
         return redirect()
         ->route('products.index')
@@ -72,24 +56,9 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $rules = [
-            'title' => 'required',
-            'description' => ['required', 'min:20'],
-            'price' => ['required', 'min:1'],
-            'stock' => ['required', 'min:0'],
-            'status' => ['required', 'in:available,unavailable'],
-        ];
-        
-        $this->req->validate($rules);
-
-        if ($this->req->status == 'available' && $this->req->stock == 0) {
-            session()->flash('error', 'If available must have stock');
-            return redirect()->back()->withInput($this->req->all());
-        }
-        
-        $product->update($this->req->all());
+        $product->update($request->validated());
 
         return redirect()
         ->route('products.index')

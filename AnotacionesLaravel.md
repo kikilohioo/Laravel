@@ -4,6 +4,7 @@
 - ```cd example-app``` nos cambiamos al directorio raiz del proyecto y listo
 - Para integración con React instalar libreraria laravel/ui con comando ```composer require laravel/ui``` y usamos el comando ```php artisan ui react --auth``` para montar el ambiente para conectar con apps de React(puede ser Vue o Bootstrap tambien)
 
+#### Laravel Tips
 * Buena práctica #1
 	Agregar nombres a las rutas con ```...->name('nombreRuta.metodo')```
 * Buena práctica #2
@@ -42,6 +43,33 @@
 ```
 return $this->belongsToMany(Product::class)->withPivot('quantity');
 ```
+* Buena práctica #7
+	Descentralizar la gestion de las validaciones con un CustomFormRequest, para eso primero creaemos un archivo ModelRequest con el comando ```php artisan make:request ModelRequest```
+	en el que editaremos el metodo rules() incluyendo ahi las reglas basicas de validacion como en el siguiente ejemplo:
+	```
+	public function rules()
+    {
+        return [
+            'title' => 'required',
+            'description' => ['required', 'min:20'],
+            'price' => ['required', 'min:1'],
+            'stock' => ['required', 'min:0'],
+            'status' => ['required', 'in:available,unavailable'],
+        ];
+    }
+	```
+	además podremos agregar reglas personalizadas de validacion mediante el metood withValidator() que podremos agregar al ModelRequest como en el siguiente ejemplo
+	```
+	public function withValidator($validator)
+    {
+        $validator->after(function($validator){
+            if ($this->status == 'available' && $this->stock == 0) {
+                $validator->errors()
+                ->add('stock', 'If available must have stock');
+            }
+        });
+    }
+	```
 
 
 #### Comandos Artisan

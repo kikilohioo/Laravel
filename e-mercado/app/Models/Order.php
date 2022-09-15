@@ -9,6 +9,10 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'status'
+    ];
+
     public function payment()
     {
         return $this->hasOne(Payment::class);
@@ -21,6 +25,11 @@ class Order extends Model
 
     public function products()
     {
-        return $this->morphToMany(Product::class, 'productable')->withPivot('quantity');
+        return $this->morphToMany(Product::class , 'productable')->withPivot('quantity');
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->products->pluck('total')->sum();
     }
 }

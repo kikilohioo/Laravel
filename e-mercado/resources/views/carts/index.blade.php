@@ -1,0 +1,24 @@
+@extends('layouts.app')
+
+@section('content')
+    <h1>Your cart</h1>
+    @if (!isset($cart) || $cart->products->isEmpty())
+        <div class="alert alert-info">
+            Your cart is empty!
+        </div>
+    @else
+        <div class="text-center">
+            <h3><strong>sub-Total: $ {{ $cart->total }}</strong></h3>
+            <a class="btn btn-success mb-3" href="{{ route('orders.create') }}">
+                Start Checkout
+            </a>
+        </div>
+        <div class="row">
+            @foreach ($cart->products as $product)
+                <div class="col-3">
+                    @include('components.product-card')
+                </div>
+            @endforeach
+        </div>
+    @endempty
+@endsection

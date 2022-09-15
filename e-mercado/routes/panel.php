@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Admin Panel Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
@@ -14,11 +14,4 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', 'HomeController@index')->name('main');
-
-Route::resource('products.carts', 'ProductCartController')->only(['destroy', 'store']);
-Route::resource('orders.payments', 'OrderPaymentController')->only(['create', 'store']);
-Route::resource('carts', 'CartController')->only(['index']);
-Route::resource('orders', 'OrderController');
-
-Auth::routes();
+Route::resource('products', 'ProductController');

@@ -6,9 +6,17 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use App\Services\CartService;
 
 class ProductCartController extends Controller
 {
+    public $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -18,10 +26,10 @@ class ProductCartController extends Controller
      */
     public function store(Request $request, Product $product)
     {
-        $cart = $this->getFromCookieOrCreate();
+        $cart = $this->cartService->getFromCookieOrCreate();
 
-        $quantity = $cart
-        ->products()
+        $quantity = $cart->products()
+        ->find($product->id)
         ->pivot
         ->quantity ?? 0;
 
@@ -30,23 +38,10 @@ class ProductCartController extends Controller
             $product->id => ['quantity' => $quantity + 1]
         ]);
 
-        $cookie = Cookie::get('cart', $cart->id, 7 * 24 * 60);
+        $cookie = $this->cartService->makeCookie($cart);
 
-        return $cookie;
+        return redirect()->back()->cookie($cookie);
     }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  \App\Models\Product  $product
-    //  * @param  \App\Models\Cart  $cart
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, Product $product, Cart $cart)
-    // {
-    //     //
-    // }
 
     /**
      * Remove the specified resource from storage.
@@ -57,6 +52,10 @@ class ProductCartController extends Controller
      */
     public function destroy(Product $product, Cart $cart)
     {
-        //
+        $cart->products()->detach($product->id);
+
+        $cookie = $this->cartService->makeCookie($cart);
+
+        return redirect()->back()->cookie($cookie);
     }
 }

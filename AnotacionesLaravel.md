@@ -4,23 +4,23 @@
 - ```cd example-app``` nos cambiamos al directorio raiz del proyecto y listo
 - Para integración con React instalar libreraria laravel/ui con comando ```composer require laravel/ui``` y usamos el comando ```php artisan ui react --auth``` para montar el ambiente para conectar con apps de React(puede ser Vue o Bootstrap tambien)
 
-#### Laravel Tips
-* Buena práctica #1
+## Laravel ### Tips
+* ### Tip #1
 	Agregar nombres a las rutas con ```...->name('nombreRuta.metodo')```
-* Buena práctica #2
+* ### Tip #2
 	Formas de redirigir 
 	- ```return redirect()->back()```
 	- ```return redirect()->action('ControllerName@metodo')```
 	- ```return redirect()->route(''nombreruta.metodo)```
-* Buena práctica #3
+* ### Tip #3
 	Resolver mediante inyección implicitad de modelos las operaciones show | update | destroy y cualquier otra que depende de encontrar un elemento asociado a un modelo, mediante su identificador. Esto se realiza casteando el parametro al momento de recibirlo en el metodo encargado de gestionar la operación en cuestion 
 	``` public function show(Model $modelById){...}``` de esta forma, adentro del metodo show ```$modelById``` es el mismo resultado que la operación ```Model::findOrFail($modelById)```. Con la excepción de que en el enrrutamiento podemos resolver sobre cual parametro realizar la busqueda de la siguiente forma 
 	```Route::get('model/{modelById:otherField}')``` ahora va a hacer un ```findOrFail()``` con otro parametro del modelo, en este caso ```otherField```
-* Buena práctica #4
+* ### Tip #4
 	Mantener los nombres de los metodos de las operaciones CRUD con las recomendaciones de laravel (index,show,store,update,destroy) nos permite resolver todas esas rutas de forma muy simple. Todas las lineas de enrrutamiento anteriores para cada metodo se resuelven en una sola ```Route::resource('model', 'ModelController')```. Además podemos excluir mediante los metodos ```->only([...]) o ->except([...])```
-* Buena práctica #5
+* ### Tip #5
 	Hay que tener en cuenta el orden en el que se crean las migraciones para que no hayan conflictos en las relaciones con claves foraneas en la base de datos
-* Buena práctica #6
+* ### Tip #6
 	Para construccion de relaciones con modelos con claves compuestas debemos sobrescribir el siguiente metodo de la siguiente forma
 	 ```
 	 /**
@@ -43,7 +43,7 @@
 ```
 return $this->belongsToMany(Product::class)->withPivot('quantity');
 ```
-* Buena práctica #7
+* ### Tip #7
 	Descentralizar la gestion de las validaciones con un CustomFormRequest, para eso primero creaemos un archivo ModelRequest con el comando ```php artisan make:request ModelRequest```
 	en el que editaremos el metodo rules() incluyendo ahi las reglas basicas de validacion como en el siguiente ejemplo:
 	```
@@ -70,6 +70,25 @@ return $this->belongsToMany(Product::class)->withPivot('quantity');
         });
     }
 	```
+* ### Tip #8
+	#### Controladores de recursos anidados
+	Por ejemplo para agregar un producto a un carrito se usan este tipo de controladores, que responde o resuelve 2 modelos, uno padre y uno hijo.
+	Se utiliza el comando 
+	```
+	php artisan make:controller PadreHijoController -m Hijo -p Padre
+	```
+	Además para registrar las rutas se recomienda usar una ruta de recursos de la siguiente forma
+	```
+	Route::resource('padre.hijo', 'PadreHijoController)
+	```
+* ### Tip #9
+	Uso de getters para centralizar logicas sencillas como calcular precio total de un producto por su cantidad o simil, agregandolas como un "nuevo atributo" ejemplo:
+	```
+	public function getTotalAttribute(){
+		return $this->pivot->quantity * $this->price;
+	}
+	```
+	Retorna el valor total de ese producto y como regla general se usa get + nuevoAtributo + Attribute, accediendo luego como: ```$model->nuevoAtributo```
 
 
 #### Comandos Artisan

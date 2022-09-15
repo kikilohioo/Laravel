@@ -13,15 +13,10 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $cart = $this->cartService->getFromCookieOrCreate();
-        
-        return $cart->products;
+        return view('carts.index')->with([
+            'cart' => $this->cartService->getFromCookie()
+        ]);
     }
 }

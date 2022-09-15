@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>e-Mercado</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -34,7 +34,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('products.index') }}">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            @inject('cartService', 'App\Services\CartService')
+                            <a class="nav-link"
+                                href="{{ route('carts.index') }}">Cart({{ $cartService->countProducts() }})</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -79,7 +86,6 @@
 
         <main class="py-4">
             <div class="container-fluid">
-                @yield('content')
                 @if (session()->has('success'))
                     <div class="alert alert-success">
                         {{ session()->get('success') }}
@@ -94,6 +100,7 @@
                         </ul>
                     </div>
                 @endif
+                @yield('content')
             </div>
         </main>
     </div>

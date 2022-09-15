@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Requests\ProductRequest;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -18,7 +17,7 @@ class ProductController extends Controller
     public function __construct(Request $req)
     {
         $this->req = $req;
-        $this->middleware('auth')->except(['index','show']);
+        $this->middleware('auth')->except(['show']);
     }
 
     public function index()

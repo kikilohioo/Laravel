@@ -20,7 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password'
     ];
 
     /**
@@ -42,20 +42,33 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function orders(){
+    protected $dates = [
+        'admin_since'
+    ];
+
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
-    public static function user(){
+    public static function user()
+    {
         return self::where()->first();
     }
 
-    public function payments(){
-        return $this->hasManyThrough(Payment::class, Order::class);
+    public function payments()
+    {
+        return $this->hasManyThrough(Payment::class , Order::class);
     }
 
     public function image()
     {
         return $this->morphOne(Image::class , 'imageable');
+    }
+
+    public function isAdmin()
+    {
+        return $this->admin_since != null
+            && $this->admin_since->lessThanOrEqualTo(now()); 
     }
 }

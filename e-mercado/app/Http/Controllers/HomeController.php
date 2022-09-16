@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         return view('welcome')->with([
-            'products' => Product::available()->get()
+            'products' => Product::all()
         ]);
     }
 }

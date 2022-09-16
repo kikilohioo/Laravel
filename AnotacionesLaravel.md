@@ -89,7 +89,28 @@ return $this->belongsToMany(Product::class)->withPivot('quantity');
 	}
 	```
 	Retorna el valor total de ese producto y como regla general se usa get + nuevoAtributo + Attribute, accediendo luego como: ```$model->nuevoAtributo```
-
+* ### Tip #10
+	Habilitar log de consultas para conexion actual:
+	```
+	\DB::connection()->enableQueryLog();
+	```
+* ### Tip #11
+	Usar metodo with() para evitar consultas excesivas a la base de datos para obtener entidades a traves de relaciones
+	```
+	Model::with('relation')->get()
+	```
+	O mejor aun, siempre que un modelo quieramos que venga con cierta relacion o relaciones, editamos el modelo agregando el siguiente atributo
+	```
+	protected $with = [
+		'relation1',
+		'relation2',
+		...
+	]
+	```
+	Adicionalmente para poder tener excepciones, existe el metodo without() que se usa de la siguiente forma
+	```
+	Model::without('relation')->get()
+	```
 
 #### Comandos Artisan
 A todos agregar antes ```php artisan```
@@ -131,7 +152,7 @@ Es el ORM de Laravel y sirve para hacer interacciones a la base de datos a trave
 * #### Como eliminar un registro
 	```$entidad = Entidad::findOrFail($id)``` aplica el metodo where
 	```$entidad->delete()```
-* #### Como crear un scope
+* #### Como crear un local scope
 	En el modelo de la entidad crearemos una funcion por ejemplo para mostrar los productos disponibles en este ejemplo:
 	```
 	public function scopeAvailable($query){
@@ -142,3 +163,64 @@ Es el ORM de Laravel y sirve para hacer interacciones a la base de datos a trave
 	```
 	Porduct::available()->get()
 	```
+* #### Como crear un global scope
+	No existe comando aun en la version 9 de laravel para ello, por lo que deberemos crear el archivo a mano en su respectivo directorio App\Scopes\AnythingScope.php incluyendo las siguientes lineas de código.
+	
+	```
+	<?php
+
+	namespace App\Scopes;
+
+	use Illuminate\Database\Eloquent\Builder;
+	use Illuminate\Database\Eloquent\Model;
+	use Illuminate\Database\Eloquent\Scope;
+
+
+	class AnythingScope implements Scope
+	{
+		/**
+		* Apply the scope to a given Eloquent query builder.
+		*
+		* @param  \Illuminate\Database\Eloquent\Builder  $builder
+		* @param  \Illuminate\Database\Eloquent\Model  $model
+		* @return void
+		*/
+		public function apply(Builder $builder, Model $model)
+		{
+			$builder->anything();
+		}
+	}
+	``` 
+	Luego en el modelo debemos registrar las scopes gloabales que utilizaremos de la siguiente forma.
+	```
+	/**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new AnythingScope);
+    }
+	```
+	Por ultimo para evadir el uso de un global scope debemos de generar un modelo que extienda del modelo donde queremos sacarlo y redefinir la fucnion ```booted()``` para asi desregistrar los scopes globales que deseemos. Aqui un codigo de ejemplo de productos:
+	```
+	<?php
+
+	namespace App\Models;
+
+	class PanelProduct extends Product
+	{
+		/**
+		* The "booted" method of the model.
+		*
+		* @return void
+		*/
+		protected static function booted()
+		{
+			
+		}
+	}
+	```
+
+

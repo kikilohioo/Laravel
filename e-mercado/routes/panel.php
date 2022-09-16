@@ -13,5 +13,5 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', 'PanelController@index')->name('panel');
 Route::resource('products', 'ProductController');

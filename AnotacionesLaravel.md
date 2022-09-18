@@ -111,6 +111,15 @@ return $this->belongsToMany(Product::class)->withPivot('quantity');
 	```
 	Model::without('relation')->get()
 	```
+* ### Tip #12
+	Probar usar fill() and isDirty() para auditoria sobre modelos
+* ### Tip #13
+	Usando setters por ejemplo para automatizar la gestion de encriptacion de contraseñas
+	```
+	public function setPasswordAttribute($password){
+        $this->attributes['password'] = Hash::make($password);
+    }
+	```
 
 #### Comandos Artisan
 A todos agregar antes ```php artisan```

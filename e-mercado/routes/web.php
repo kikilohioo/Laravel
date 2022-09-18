@@ -16,9 +16,17 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', 'HomeController@index')->name('main');
 
-Route::resource('products.carts', 'ProductCartController')->only(['destroy', 'store']);
-Route::resource('orders.payments', 'OrderPaymentController')->only(['create', 'store']);
-Route::resource('carts', 'CartController')->only(['index']);
-Route::resource('orders', 'OrderController');
+Route::get('profile', 'ProfileController@edit')->name('profile.edit')->middleware(['auth']);
+Route::put('profile', 'ProfileController@update')->name('profile.update');
 
-Auth::routes();
+Route::resource('products.carts', 'ProductCartController')->only(['destroy', 'store']);
+Route::resource('orders.payments', 'OrderPaymentController')->only(['create', 'store'])->middleware(['verified']);
+Route::resource('carts', 'CartController')->only(['index']);
+Route::resource('orders', 'OrderController')->middleware([
+    'verified',
+    //'reset' para que no se puedan resetear las contraseñas
+]);
+
+Auth::routes([
+    'verify' => true
+]);

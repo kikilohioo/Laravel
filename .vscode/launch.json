@@ -9,7 +9,7 @@
             "type": "php",
             "request": "launch",
             "port": 9003,
-            "cwd": "/public"
+            "cwd": "e-mercado/public"
         },
         {
             "name": "Launch built-in server and debug",

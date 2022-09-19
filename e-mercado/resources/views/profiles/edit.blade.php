@@ -66,8 +66,7 @@
 
                             <div class="col-md-6">
                                 <div class="custom-file">
-                                    <input id="user-image" accept="images/*" class="custom-file-input" type="file" class="form-control" name="image">
-                                    <label class="custom-file-label">Profile image...</label>
+                                    <input id="user-image" accept="images/*" class="form-control" type="file" class="form-control" name="image">
                                 </div>
                             </div>
                         </div>

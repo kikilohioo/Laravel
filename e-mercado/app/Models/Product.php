@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\AvailableScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'products';
 
@@ -32,6 +33,12 @@ class Product extends Model
     protected static function booted()
     {
         static::addGlobalScope(new AvailableScope);
+        static::updated(function($product){
+            if($product->stock == 0 && $product->status == 'available'){
+                $product->status = 'unavailable';
+                $product->save();
+            }
+        });
     }
 
     public function carts()

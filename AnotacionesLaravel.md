@@ -120,6 +120,36 @@ return $this->belongsToMany(Product::class)->withPivot('quantity');
         $this->attributes['password'] = Hash::make($password);
     }
 	```
+* ### Tip #14
+	Soft Deletes, forma de eliminar parcialmente datos de la base de datos, para utilizar esta caracteristica de Laravel, deberemos de modificar el modelo en cuestion, dejandolo de la siguiente forma:
+	```
+	use Illuminate\Database\Eloquent\SoftDeletes;
+
+	class Product extends Model
+	{
+    	use HasFactory, SoftDeletes;
+	...
+	```
+	De esta forma al usar delete modificaremos el atributo ```deleted_at``` de la base de datos. Además accederemos a esos elementos "eliminados" saltandonos los global scopes usando el metodo ```withoutGlobalScopes()->onlyTrashed()```. Por ultimo podremos restaurarlos usando el metodo ```restore()```, aplicable tambien a colecciones.
+* ### Tip #15
+	Como crear comandos personalizados de artisan: usando el siguiente comando:
+	```php artisan make:command CommandName```
+	En el atributo signature registramos el comando en si y los parametros
+	```protected $signature = 'carts:remove-old {--days=7 : The days after which the carts will be removed}';```
+	Y por ultimo en el metodo handle realizaremos la tarea en si que realiza el comando, asi como los mensajes que devolveremos por consola.
+* ### Tip #16
+	Agendar ejecucion de comandos para automatizar tareas, se hace modificando el archivo Console\Kernel.php y ejecutnado el comando ```php artisan schedule:work``` para desarrollo y ```php artisan schedule:run``` para produccion(se debe indagar sobre cron job u eventos dependiendo del OS).
+	Previo a su ejecucion deberemos de modificar en el archivo Kernel.php el metodo schedule() de la siguietne forma:
+	```
+	protected function schedule(Schedule $schedule)
+    {
+		$schedule->command('carts:remove-old')->daily();
+    }
+	```
+* ### Tip #17
+	Eventos desencadenados cuando se trae, crea, está creando, actualiza, está actualizando, elimina, está eliminando, restaura, está restaurando o replicando, un modelo en la DB. Se pueden crear a traves de los Events::class, con sus correspondientes Listeners::class, tambien pueden hacerse en Closures directamente en el modelo correspondiente o en el caso de que sean multiples eventos para un modelo solo, existen los Observers::class, para registrar multiples eventos de forma centralizada.
+
+
 
 #### Comandos Artisan
 A todos agregar antes ```php artisan```

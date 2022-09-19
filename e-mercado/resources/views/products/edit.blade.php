@@ -1,7 +1,11 @@
 @extends('layouts.app')
 @section('content')
 	<h1>Edit a Product</h1>
-	<form method="POST" action="{{route('products.update', ['product' => $product->id])}}">
+	<form 
+		method="POST" 
+		action="{{route('products.update', ['product' => $product->id])}}"
+		enctype="multipart/form-data"
+	>
 		@csrf
 		@method('PUT')
 		<div class="form-row">
@@ -27,6 +31,16 @@
 				<option {{old('status') == 'available' ? 'selected' : ($product->status == 'unavailable' ? 'selected' : '') }} value="unavailable">Unavailable</option>
 			</select>
 		</div>
+		<div class="form-row mb-3">
+            <label for="product-images" class="col-form-label">{{ __('Images') }}</label>
+
+            <div class="col-6">
+                <div class="custom-file">
+                    <input id="product-images" accept="images/*" class="form-control" type="file" class="form-control"
+                        name="images[]" multiple required>
+                </div>
+            </div>
+        </div>
 		<div class="form-row">
 			<button type="submit" class="btn btn-primary btn-lg">Edit Product</button>
 		</div>

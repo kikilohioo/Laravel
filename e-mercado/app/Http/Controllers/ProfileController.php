@@ -18,9 +18,9 @@ class ProfileController extends Controller
 
     public function update(ProfileRequest $request)
     {
-        return DB::transaction(function () use ($request) {
+        return DB::transaction(function () use ($request) {           
             $user = $request->user();
-            $user->fill($request->validated());
+            $user->fill(array_filter($request->validated()));
             
             if($user->isDirty('email')){
                 $user->email_verified_at = null;

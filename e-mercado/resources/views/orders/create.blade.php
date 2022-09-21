@@ -22,7 +22,7 @@
                 @foreach ($cart->products as $product)
                     <tr>
                         <td>
-                            <img height="60" src="{{ asset($product->images->first()->path) }}"
+                            <img height="60" src="{{ asset('images/'.$product->images->first()->path) }}"
                                 alt="{{ $product->title }}">
                             {{ $product->title }}
                         </td>

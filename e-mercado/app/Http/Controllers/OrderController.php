@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+
+use MercadoPago;
+use MercadoPago\Item;
+use MercadoPago\Preference;
+
+require base_path('vendor/autoload.php');
+MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
 
 class OrderController extends Controller
 {
@@ -41,10 +49,19 @@ class OrderController extends Controller
             ]);
     
             $cart = $this->cartService->getFromCookie();
+
+            $items = array();
     
-            $cartProductsWithQuantity = $cart->products->mapWithKeys(function($product){
+            $cartProductsWithQuantity = $cart->products->mapWithKeys(function($product) use (&$items){
                 $element[$product->id] = ['quantity' => $product->pivot->quantity];
                 $quantity = $product->pivot->quantity;
+
+                $item = new Item();
+                $item->title = $product->title;
+                $item->quantity = $quantity;
+                $item->unit_price = $product->price;
+
+                array_push($items, $item);
 
                 if($product->stock < $quantity){
                     throw ValidationException::withMessages([
@@ -56,11 +73,16 @@ class OrderController extends Controller
     
                 return $element;
             });
-    
+
+            $preference = new Preference();
+            $preference->items = $items;    
+            $preference->save();
+
             $order->products()->attach($cartProductsWithQuantity->toArray());
     
             return redirect()->route('orders.payments.create', [
-                'order' => $order
+                'order' => $order,
+                'cart' => $preference->id
             ]);
         }, 5);
         

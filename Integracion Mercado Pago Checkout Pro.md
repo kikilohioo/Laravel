@@ -25,12 +25,54 @@
 		}
 	}
 	```
-10. En archivo de plantilla blade que servirá para realizar el checkout inlcuir estas lineas al inicio del archivo:
+
+### Formas de integrarlo
+No se exactamente cual es la mejor forma, pero de momento no he podido enviar el objeto de ```$preference``` de Marcado Pago hacia el front para su posterior prosesamiento. Actualmente estoy realizando lo siguiente:
+1. En el controlador que retorna la vista de pago, envio el ```$preference->id``` a traves de la URL
+2. En la plantilla de blade para el pago tomo ese ```$preference->id``` y armo los scripts necesarios para conformar el Checkout Modal y procesar el pago de la siguiente forma
+	```
+	<script>
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const cart_id = urlParams.get('cart')
+		const mp = new MercadoPago('{{config('services.mercadopago.key')}}', {
+			locale: 'es-AR'
+		});
+
+		mp.checkout({
+			preference: {
+			id: cart_id
+			},
+			render: {
+			container: '.cho-container',
+			label: 'Pagar',
+			}
+		});
+	</script>
+	```
+
+#### Camino Alternativo(original visto en video de YouTube)
+1. En archivo de plantilla blade que servirá para realizar el checkout inlcuir estas lineas al inicio del archivo:
 	```
 	@php
-	// SDK de Mercado Pago
-	require base_path('/vendor/autoload.php');
-	// Agrega credenciales
-	MercadoPago\SDK::setAccessToken(config('services.token'));
+		// SDK de Mercado Pago
+		require base_path('/vendor/autoload.php');
+		// Agrega credenciales
+		MercadoPago\SDK::setAccessToken(config('services.token'));
+
+		$item = new Item();
+		$item->title = 'Papas Fritas';
+		$item->quantity = 2;
+		$item->unit_price = 100.00;
+		$preference = new Preference();
+		$preference->items = array($item);    
+		$preference->save();
 	@endphp
 	```
+2. Posteriormente deberiamos de tener acceso al obejto de preferencias y los datos de los items con mayor flexibildiad y de forma más segura
+
+Aclaracion: de esta forma hay un error interno en el framework que no he podido debuguear
+
+## Proximas pruebas o mejoras
+- Integrar feedback con sistema propio de control de pagos
+- Desarrollar endponits para recepcion de actualizacion de estado de pagos

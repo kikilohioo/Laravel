@@ -9,10 +9,32 @@
         ]) }}"
             class="d-inline">
             @csrf
+            {{-- Pago Comun --}}
             <button type="submit" class="btn btn-success">Pay</button>
         </form>
-        <div class="cho-container"></div>
+        {{-- Mercado Pago Checkout Pro --}}
+        <div class="cho-container mt-2"></div>
+        {{-- PayPal Checkout --}}
+        <form action="{{route('paypal.pay')}}" method="post">
+            @csrf
+            <input type="hidden" name="amount" value="{{$order->total}}">
+            <button class="mt-2 btn btn-primary" type="submit">
+                Pay with 
+                <i class="ms-2 fa-2xl fa-brands fa-cc-paypal"></i>
+            </button>
+        </form>
+        {{-- dlocal payments --}}
+        <form action="{{route('dlocal.pay')}}" method="post">
+            @csrf
+            <input type="hidden" name="amount" value="{{$order->total}}">
+            <input type="hidden" name="order_id" value="{{$order->id}}">
+            <button class="mt-2 btn btn-primary" type="submit">
+                Pay with 
+                <strong>d-local</strong>
+            </button>
+        </form>
     </div>
+    {{-- Mercado Pago Checkout Pro --}}
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script>
         const queryString = window.location.search;
@@ -28,7 +50,7 @@
             },
             render: {
             container: '.cho-container',
-            label: 'Pagar',
+            label: 'Pay with Mercado Pago',
             }
         });
     </script>

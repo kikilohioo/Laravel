@@ -12,14 +12,12 @@ use MercadoPago;
 use MercadoPago\Item;
 use MercadoPago\Preference;
 
-require base_path('vendor/autoload.php');
-MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
-
 class OrderController extends Controller
 {
     public $cartService;
-
+    
     public function __construct(CartService $cartService){
+        MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
         $this->cartService = $cartService;
         $this->middleware('auth');
     }

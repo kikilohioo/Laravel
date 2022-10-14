@@ -262,4 +262,20 @@ Es el ORM de Laravel y sirve para hacer interacciones a la base de datos a trave
 	}
 	```
 
-
+#### Broadcasting(push and realtime refreshing)
+- Primero deberemos revisar nuestro archivo de configuracion en ```config/broadcasting.php```, donde observamos que por defecto viene ```null``` si no se indica en el ```.env``` archivo.
+- Nos traeremos una libreria llamada Pusher mediante el comando ```composer require pusher/pusher-php-server```
+- El siguiente paso es configurar adecuadamente Pusher, para ello iremos a pusher.com
+- Iniciaremos sesion y crearemos nuestra app, seleccionando las tecnologias tanto para back-en como para front-end.
+- Obtendremos unas keys de este estilo
+```
+app_id = "********"
+key = "**********************"
+secret = "************************"
+cluster = "****"
+```
+- Estos datos deberemos agregarlos al ```.env``` archivo donde correspondan, asi como modificar esta variable de la siguiente forma```BROADCAST_DRIVER=pusher```
+- Ahora crearemos un evento con el comando ```php artisan make:event EventName``` y agregaremos un ```... implement ShouldBroadcast``` al final del nombre de la clase
+- Crearemos una variable publica que incluiremos en el constructor de la clase, que se resivirá en el mismo.
+- Cambiamos el nombre del ```new PrivateChannel('nameHere')``` por lo que requiera cada caso
+- Luego iremos al archivo ```config/app.php``` y descomentaremos la linea ```App\Providers\BroadcastServiceProvider::class,```
